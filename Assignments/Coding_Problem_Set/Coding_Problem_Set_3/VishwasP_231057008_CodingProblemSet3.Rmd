@@ -1,0 +1,58 @@
+---
+title: "VishwasP_231057008_CodingProblemSet3"
+date: "2023-11-14"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+
+
+# Load libraries
+library(ggplot2)
+
+# Load keystroke timing data for users A and B
+data_A <- read.table("personKeyTimingA.txt", header = FALSE, sep = ",")
+data_B <- read.table("personKeyTimingB.txt", header = FALSE, sep = ",")
+
+# Plot density histograms
+ggplot() +
+  geom_density(aes(x = data_A$V1), fill = "blue", alpha = 0.5, label = "User A") +
+  geom_density(aes(x = data_B$V1), fill = "red", alpha = 0.5, label = "User B") +
+  labs(title = "Density Histograms of Keystroke Times",
+       x = "Time (milliseconds)",
+       y = "Density") +
+  scale_fill_manual(values = c("blue", "red")) +
+  theme_minimal()
+
+
+mu_A <- mean(data_A$V1)
+sigma_A <- sd(data_A$V1)
+
+mu_B <- mean(data_B$V1)
+sigma_B <- sd(data_B$V1)
+
+
+time_email <- as.numeric(read.table("email.txt", header = FALSE, sep = ",")$V1)
+
+# Calculate likelihood ratios
+likelihood_ratio_A <- dnorm(time_email, mean = mu_A, sd = sigma_A)
+likelihood_ratio_B <- dnorm(time_email, mean = mu_B, sd = sigma_B)
+
+# Calculate the final likelihood ratio
+final_likelihood_ratio <- likelihood_ratio_A / likelihood_ratio_B
+
+# Print the result
+cat("Likelihood Ratio (A:B) =", mean(final_likelihood_ratio), "\n")
+
+```
+
